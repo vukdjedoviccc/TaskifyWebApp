@@ -1,4 +1,4 @@
-﻿# Taskify - Task Management Application
+# Taskify - Task Management Application
 
 Fullstack aplikacija za upravljanje projektima i taskovima sa **Kanban board-om**.
 Kreirana koriscenjem **Angular 21 + Signals + TailwindCSS** na frontendu i **Node.js + Express 5 + Prisma + SQL Server** na backendu.
@@ -10,7 +10,7 @@ Kreirana koriscenjem **Angular 21 + Signals + TailwindCSS** na frontendu i **Nod
 Taskify je moderna task management aplikacija koja omogucava korisnicima da organizuju svoj rad kroz:
 
 - **Projekte** - Grupisanje taskova po projektima
-- **Kanban Board** - Vizuelni prikaz taskova sa drag & drop funkcionalnoÅ¡cu
+- **Kanban Board** - Vizuelni prikaz taskova sa drag & drop funkcionalnošcu
 - **Kolone** - Prilagodljive kolone (To Do, In Progress, Done, ili custom)
 - **Taskovi** - Detaljni taskovi sa prioritetima, rokovima, kategorijama i dodeljivanjem
 - **Kalendar** - Mesecni prikaz svih taskova sa rokovima
@@ -105,31 +105,33 @@ Taskify je moderna task management aplikacija koja omogucava korisnicima da orga
 
 ## Arhitektura
 
+```
 TaskifyWebApp/
-â”œâ”€â”€ client/                     # Angular frontend
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ app/
-â”‚   â”‚   â”‚   â”œâ”€â”€ core/           # Services, guards, models, interceptors
-â”‚   â”‚   â”‚   â”œâ”€â”€ layout/         # Navbar
-â”‚   â”‚   â”‚   â”œâ”€â”€ pages/          # Route components
-â”‚   â”‚   â”‚   â””â”€â”€ shared/         # Reusable components (Button, Input, Modal)
-â”‚   â”‚   â””â”€â”€ styles.css          # Global styles + Tailwind
-â”‚   â””â”€â”€ package.json
-â”‚
-â”œâ”€â”€ server/                     # Node.js backend
-â”‚   â”œâ”€â”€ prisma/
-â”‚   â”‚   â”œâ”€â”€ schema.prisma       # Database schema (7 modela)
-â”‚   â”‚   â”œâ”€â”€ migrations/         # 5 SQL migracija
-â”‚   â”‚   â””â”€â”€ seed.js             # Test data seeder
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ config/             # Environment config, email
-â”‚   â”‚   â”œâ”€â”€ controllers/        # Route handlers (7 kontrolera)
-â”‚   â”‚   â”œâ”€â”€ middleware/         # Auth, role checking
-â”‚   â”‚   â”œâ”€â”€ routes/             # API routes (7 fajlova)
-â”‚   â”‚   â””â”€â”€ server.js           # Entry point
-â”‚   â””â”€â”€ package.json
-â”‚
-â””â”€â”€ README.md
+|-- client/                     # Angular frontend
+|   |-- src/
+|   |   |-- app/
+|   |   |   |-- core/           # Services, guards, models, interceptors
+|   |   |   |-- layout/         # Navbar
+|   |   |   |-- pages/          # Route components
+|   |   |   +-- shared/         # Reusable components (Button, Input, Modal)
+|   |   +-- styles.css          # Global styles + Tailwind
+|   +-- package.json
+|
+|-- server/                     # Node.js backend
+|   |-- prisma/
+|   |   |-- schema.prisma       # Database schema (7 modela)
+|   |   |-- migrations/         # 5 SQL migracija
+|   |   +-- seed.js             # Test data seeder
+|   |-- src/
+|   |   |-- config/             # Environment config, email
+|   |   |-- controllers/        # Route handlers (7 kontrolera)
+|   |   |-- middleware/         # Auth, role checking
+|   |   |-- routes/             # API routes (7 fajlova)
+|   |   +-- server.js           # Entry point
+|   +-- package.json
+|
++-- README.md
+```
 
 ---
 
@@ -137,49 +139,51 @@ TaskifyWebApp/
 
 ### Entiteti (7 modela)
 
+```
 User
-â”œâ”€â”€ id, name, email, password
-â”œâ”€â”€ role (USER | MODERATOR | ADMIN)
-â”œâ”€â”€ createdAt, updatedAt
-â””â”€â”€ Relacije: ownedProjects, createdTasks, assignedTasks, notifications
+|-- id, name, email, password
+|-- role (USER | MODERATOR | ADMIN)
+|-- createdAt, updatedAt
++-- Relacije: ownedProjects, createdTasks, assignedTasks, notifications
 
 Project
-â”œâ”€â”€ id, name, description, color
-â”œâ”€â”€ ownerId -> User
-â”œâ”€â”€ createdAt, updatedAt
-â””â”€â”€ Relacije: owner, boards, labels
+|-- id, name, description, color
+|-- ownerId -> User
+|-- createdAt, updatedAt
++-- Relacije: owner, boards, labels
 
 Board
-â”œâ”€â”€ id, name, projectId -> Project
-â”œâ”€â”€ createdAt, updatedAt
-â””â”€â”€ Relacije: project, columns
+|-- id, name, projectId -> Project
+|-- createdAt, updatedAt
++-- Relacije: project, columns
 
 Column
-â”œâ”€â”€ id, name, boardId -> Board
-â”œâ”€â”€ position, color
-â”œâ”€â”€ createdAt, updatedAt
-â””â”€â”€ Relacije: board, tasks
+|-- id, name, boardId -> Board
+|-- position, color
+|-- createdAt, updatedAt
++-- Relacije: board, tasks
 
 Task
-â”œâ”€â”€ id, title, description
-â”œâ”€â”€ columnId -> Column, createdById -> User, assigneeId -> User (nullable)
-â”œâ”€â”€ labelId -> Label (nullable, 1 labela po tasku)
-â”œâ”€â”€ position, priority (LOW | MEDIUM | HIGH | URGENT)
-â”œâ”€â”€ dueDate
-â”œâ”€â”€ createdAt, updatedAt
-â””â”€â”€ Relacije: column, createdBy, assignee, label
+|-- id, title, description
+|-- columnId -> Column, createdById -> User, assigneeId -> User (nullable)
+|-- labelId -> Label (nullable, 1 labela po tasku)
+|-- position, priority (LOW | MEDIUM | HIGH | URGENT)
+|-- dueDate
+|-- createdAt, updatedAt
++-- Relacije: column, createdBy, assignee, label
 
 Label
-â”œâ”€â”€ id, name, color, projectId -> Project
-â”œâ”€â”€ createdAt
-â””â”€â”€ Relacije: project, tasks
+|-- id, name, color, projectId -> Project
+|-- createdAt
++-- Relacije: project, tasks
 
 Notification
-â”œâ”€â”€ id, userId -> User
-â”œâ”€â”€ type (TASK_ASSIGNED | TASK_DUE_SOON)
-â”œâ”€â”€ title, message, link, isRead
-â”œâ”€â”€ createdAt
-â””â”€â”€ Relacije: user
+|-- id, userId -> User
+|-- type (TASK_ASSIGNED | TASK_DUE_SOON)
+|-- title, message, link, isRead
+|-- createdAt
++-- Relacije: user
+```
 
 ---
 
@@ -279,16 +283,21 @@ Projekat sadrzi 5 SQL Server migracija:
 
 ### 1. Kloniraj repozitorijum
 
-git clone https://github.com/elab-development/internet-tehnologije-2025-task_management_veb_aplikacija_2022_0086.git
-cd internet-tehnologije-2025-task_management_veb_aplikacija_2022_0086
+```bash
+git clone https://github.com/vukdjedoviccc/TaskifyWebApp.git
+cd TaskifyWebApp
+```
 
 ### 2. Backend Setup
 
+```bash
 cd server
 npm install
+```
 
-Kreiraj .env fajl:
+Kreiraj `.env` fajl:
 
+```env
 PORT=8081
 NODE_ENV=development
 DATABASE_URL="sqlserver://localhost:1433;database=taskify;user=sa;password=YourPassword;encrypt=true;trustServerCertificate=true"
@@ -296,21 +305,53 @@ JWT_SECRET=your_super_secret_jwt_key_here
 JWT_EXPIRES_IN=7d
 COOKIE_NAME=taskify_token
 CORS_ORIGIN=http://localhost:4200
+```
 
 Pokreni migracije i seed:
 
+```bash
 npx prisma migrate dev
 node prisma/seed.js
+```
 
 Pokreni server:
 
+```bash
 npm run dev
+```
 
 ### 3. Frontend Setup
 
+```bash
 cd client
 npm install
 npm start
+```
+
+---
+
+## Docker
+
+Projekat podrzava Docker deployment:
+
+```bash
+# Build i pokretanje svih servisa
+docker-compose up --build
+
+# Samo build
+docker-compose build
+
+# Pokretanje u background-u
+docker-compose up -d
+```
+
+### Docker Compose servisi:
+
+| Servis | Port | Opis |
+|--------|------|------|
+| frontend | 80 | Angular app (nginx) |
+| backend | 8081 | Node.js API |
+| db | 1433 | SQL Server |
 
 ---
 
