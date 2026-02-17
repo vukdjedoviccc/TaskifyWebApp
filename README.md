@@ -284,8 +284,8 @@ Projekat sadrzi 5 SQL Server migracija:
 ### 1. Kloniraj repozitorijum
 
 ```bash
-git clone https://github.com/vukdjedoviccc/TaskifyWebApp.git
-cd TaskifyWebApp
+git clone https://github.com/elab-development/internet-tehnologije-2025-task_management_veb_aplikacija_2022_0086.git
+cd internet-tehnologije-2025-task_management_veb_aplikacija_2022_0086
 ```
 
 ### 2. Backend Setup
